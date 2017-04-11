@@ -6,6 +6,11 @@ import java.util.HashMap;
 
 /**
  * Created by fenglin on 2017/4/5.
+ *
+ *
+ * 将问题转化为01背包，预处理数据，对每个规则使用哪种策略进行运算，确定每个规则的方案之后，就可以确定缓存该规则的代价和权重。
+ * 使用新的代价和权重值利用下面的状态转移方程进行计算。
+ *  f[i][v]=max{f[i-1][v],f[i-1][v-c[i]]+w[i]}
  */
 public class ruleSelectionDP {
 
@@ -99,7 +104,6 @@ public class ruleSelectionDP {
                 }
             }
         }
-
 
     }
 
