@@ -13,8 +13,8 @@ public class ruleSectionInPaper {
 
 
     public static void main(String[] args){
-        int capacity=2000;
-        int rule_number=2000;
+        int capacity=200;
+        int rule_number=65930;
         int[] weight= initParameter.initData(rule_number);
         int[] cost=initParameter.initCost(rule_number);//{0, 1, 1, 1, 1, 1, 1,1,1,1,1};
         calRulesByParams(capacity,rule_number,weight,cost);
