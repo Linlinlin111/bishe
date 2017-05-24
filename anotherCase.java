@@ -15,7 +15,8 @@ public class anotherCase {
             int[] rule_weight, int[] rule_cost, int switch_volume) {
         ArrayList<String> result = new ArrayList<String>();
         ArrayList<Integer> sort_rule = new ArrayList<Integer>();
-        HashMap<Integer, ArrayList<Integer>> dependency = initDependency();
+        HashMap<Integer, ArrayList<Integer>> dependency =initParameter.initDependency(rule_weight.length);// initDependency();
+//        System.out.println(dependency);
         int cover_cost = 2;
         int method_number = 2;
         int rule_total_number = rule_weight.length;
@@ -58,6 +59,7 @@ public class anotherCase {
             topN.add(list.get(i).getKey());
         }
 
+//        System.out.println("topN: "+topN);
         //topN规则编号按逆序排列，用于分组
         int[] sort_topN = new int[switch_volume];
         int j = 0;
@@ -99,6 +101,8 @@ public class anotherCase {
             }
         }
 
+//        System.out.println("rule_relation :" +rule_relation);
+
         ArrayList<ArrayList<String>> candidate_list = new ArrayList<ArrayList<String>>();
 
         //容量为1，直接从叶节点中选一个最大的
@@ -134,6 +138,7 @@ public class anotherCase {
         for (Integer ru : rule_relation.keySet()) {
             ArrayList<String> tmp_list = new ArrayList<String>();
             tmp_list.add(ru + "");
+//            System.out.println("rule: "+ru);
             if (rule_relation.get(ru).size() == 0) {
 
                 if (dependency.get(ru).size() == 0) {
@@ -175,7 +180,12 @@ public class anotherCase {
                         for (int i = 0; i < rule_total_number; i++)
                             rule_deal[i] = false;
                         rule_deal[ru] = true;
-
+                        //
+                        int[] cost=rule_cost.clone();
+                        for(int i:dependency.get(ru)){
+                            cost[i]-=1;
+                        }
+                        //
                         ArrayList<String> re
                                 = selectRuleUsingMixedSetMyMethodProvedVersion(rule_weight, rule_cost, switch_volume - 2, rule_deal);
                         for (String s : re) {
@@ -212,7 +222,7 @@ public class anotherCase {
                             }
                             candidate_list.add(tmp_list);
                         } else {
-                            for (int i = 0; i < rule_relation.size() - 2; i++) {
+                            for (int i = 0; i < rule_relation.get(ru).size() - 2; i++) {
                                 tmp_list.add(rule_relation.get(ru).get(i) + "");
                             }
                             tmp_list.add(rule_relation.get(ru).get(rule_relation.size() - 2) + "*");
@@ -220,17 +230,18 @@ public class anotherCase {
 
                         }
                     } else {
+                        System.out.println("positon : "+position);
                         if (position == dependency.get(ru).size() - 1) {
                             rule_deal = new boolean[rule_total_number];
                             for (int i = 0; i < rule_total_number; i++)
                                 rule_deal[i] = false;
                             rule_deal[ru] = true;
-                            for (int i = 0; i < rule_relation.size(); i++) {
+                            for (int i = 0; i < rule_relation.get(ru).size(); i++) {
                                 tmp_list.add(rule_relation.get(ru).get(i) + "");
                                 rule_deal[rule_relation.get(ru).get(i)] = true;
                             }
                             ArrayList<String> re
-                                    = selectRuleUsingMixedSetMyMethodProvedVersion(rule_weight, rule_cost, switch_volume - rule_relation.get(ru).size(), rule_deal);
+                                    = selectRuleUsingMixedSetMyMethodProvedVersion(rule_weight, rule_cost, switch_volume - rule_relation.get(ru).size()-1, rule_deal);
                             for (String s : re) {
                                 tmp_list.add(s);
                             }
@@ -311,7 +322,7 @@ public class anotherCase {
         int[] rule_new_cost = new int[rule_total_number];
         int[] rule_cover_ratio = new int[rule_total_number];
         int[][] metric = new int[rule_total_number][method_number];
-        HashMap<Integer, ArrayList<Integer>> dependency = initDependency();
+        HashMap<Integer, ArrayList<Integer>> dependency = initParameter.initDependency(rule_weight.length);// initDependency();
 
         for (int i = 0; i < rule_total_number; i++) {
             rule_new_cost[i] = cover_cost;
@@ -452,7 +463,7 @@ public class anotherCase {
         int[] rule_new_cost = new int[rule_total_number];
         int[] rule_cover_ratio = new int[rule_total_number];
         int[][] metric = new int[rule_total_number][method_number];
-        HashMap<Integer, ArrayList<Integer>> dependency = initDependency();
+        HashMap<Integer, ArrayList<Integer>> dependency = initParameter.initDependency(rule_weight.length);// initDependency();
 
         for (int i = 0; i < rule_total_number; i++) {
             rule_new_cost[i] = cover_cost;
@@ -545,7 +556,7 @@ public class anotherCase {
         int[] rule_ratio = new int[rule_total_number];
         boolean[] rule_deal = new boolean[rule_total_number];
 
-        HashMap<Integer, ArrayList<Integer>> dependency = initDependency();
+        HashMap<Integer, ArrayList<Integer>> dependency = initParameter.initDependency(rule_weight.length);// initDependency();
 
         for (int i = 0; i < rule_total_number; i++) {
             rule_new_cost[i] = 2;
@@ -613,7 +624,7 @@ public class anotherCase {
         int[] rule_new_cost = new int[rule_total_number];
         int[] rule_cover_ratio = new int[rule_total_number];
         int[][] metric = new int[rule_total_number][method_number];
-        HashMap<Integer, ArrayList<Integer>> dependency = initDependency();
+        HashMap<Integer, ArrayList<Integer>> dependency =initParameter.initDependency(rule_weight.length);// initDependency();
 
         for (int i = 0; i < rule_total_number; i++) {
             rule_new_cost[i] = cover_cost;
@@ -749,7 +760,7 @@ public class anotherCase {
         int[] rule_ratio = new int[rule_total_number];
         boolean[] rule_deal = new boolean[rule_total_number];
 
-        HashMap<Integer, ArrayList<Integer>> dependency = initDependency();
+        HashMap<Integer, ArrayList<Integer>> dependency = initParameter.initDependency(rule_weight.length);// initDependency();
 
         for (int i = 0; i < rule_total_number; i++) {
             rule_new_cost[i] = 2;
@@ -861,7 +872,7 @@ public class anotherCase {
         int rule_total_number = rule_weight.length;
         int[] rule_ratio = new int[rule_total_number];
         boolean[] rule_deal = new boolean[rule_total_number];
-        HashMap<Integer, ArrayList<Integer>> dependency = initDependency();
+        HashMap<Integer, ArrayList<Integer>> dependency = initParameter.initDependency(rule_weight.length);// initDependency();
 
 
         for (int i = 0; i < rule_total_number; i++) {
@@ -975,7 +986,9 @@ public class anotherCase {
 
         dependency.put(5, arr5);
 
+//        System.out.println(dependency);
         return dependency;
+
     }
 
 
@@ -983,14 +996,18 @@ public class anotherCase {
 
 
 //        System.out.println(Integer.parseInt("123a"));
-
-        int[] rule_weight = {5, 10, 35, 10, 35, 40};
-        int[] rule_cost = {1, 2, 3, 3, 4, 4};
-        int switch_volume = 3;
-
-        ArrayList<Integer> rule1 = selectRulesUsingDependentSetMethod(rule_weight, rule_cost, switch_volume);
+//        System.out.println(initDependency());
+//        double m=(int)100;
+        int N=65930;
+        int[] rule_weight = initParameter.initData(N);//{5, 10, 35, 10, 35, 40};
+        int[] rule_cost = initParameter.initCost(N);//{1, 2, 3, 3, 4, 4};
+        int switch_volume = 2;
 
         int sum = 0;
+/*
+        ArrayList<Integer> rule1 = selectRulesUsingDependentSetMethod(rule_weight, rule_cost, switch_volume);
+
+
         for (int i : rule1) {
             System.out.print(i + " ");
             sum += rule_weight[i];
@@ -1024,20 +1041,24 @@ public class anotherCase {
 
         System.out.println("Mixed Set : " + sum);
 
-
+*/
 //        System.out.println(selectRuleUsingMyMethod(rule_weight, rule_cost, switch_volume));
 
         ArrayList<ArrayList<String>> rule4 = selectRuleUsingMyMethod(rule_weight, rule_cost, switch_volume);
 
+//        System.out.println("rule4: "+rule4);
         int max = 0;
         ArrayList<String> tp = new ArrayList<String>();
         ArrayList<String> tp1 = new ArrayList<String>();
+
+        HashSet<String> set=new HashSet<String>();
         for (ArrayList<String> rulelist : rule4) {
             sum = 0;
             tp1.clear();
 //            System.out.println(tp+" "+max);
             for (String str : rulelist) {
                 tp1.add(str);
+//                set.add(str);
                 if (!str.contains("*")) {
                     sum += rule_weight[Integer.parseInt(str)];
                 }
@@ -1049,12 +1070,30 @@ public class anotherCase {
             }
         }
 
-//        System.out.println(tp+" "+max);
+        System.out.println(tp+" "+max);
         for (String s : tp) {
             System.out.print(s + " ");
+            set.add(s);
         }
         System.out.println("My Set :" + max);
 
+
+
+
+
+
+
+        int sum2 = 0;
+        for (String i : set) {
+//            System.out.print(i + " ");
+            set.add(i);
+            if (!i.contains("*")) {
+                sum2 += rule_weight[Integer.parseInt(i)];
+
+            }
+        }
+        System.out.println(set);
+        System.out.println("set weight:"+sum2+" "+set.size());
 
     }
 }
